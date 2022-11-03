@@ -7,11 +7,7 @@ set /p ip=Enter your IP:
 adb devices >nul
 for /f %%f in ('adb devices ^| grep "!ip!:5555"') do (
 	if [%%f] neq [!ip!:5555] goto :next
-	if [%%f] equ [!ip!:5555] (
-		echo.
-		echo Connected: %%f
-		goto :eof
-	)
+	if [%%f] equ [!ip!:5555] goto :eof
 )
 :next
 echo.
@@ -20,11 +16,7 @@ echo.
 adb tcpip 5555
 adb connect !ip!
 for /f %%f in ('adb devices ^| grep "!ip!:5555"') do (
-	if [%%f] equ [!ip!:5555] (
-		echo.
-		echo Connected: %%f
-		goto :eof
-	)
+	if [%%f] equ [!ip!:5555] goto :eof
 )
 timeout /t 1 /nobreak
 goto :x
