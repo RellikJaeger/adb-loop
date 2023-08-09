@@ -1,0 +1,28 @@
+#!/bin/bash
+echo "Force ADB over WiFi TCP/IP"
+echo "Press Ctrl+C and press y to Terminate"
+read -p "Enter your IP: " ip
+
+while true; do
+    adb devices >/dev/null
+    result=$(adb devices | grep "$ip:5555")
+    
+    if [ "$result" != "" ]; then
+        break
+    fi
+    
+    echo ""
+    echo "Waiting for a USB connection..."
+    echo ""
+    
+    adb tcpip 5555
+    adb connect "$ip"
+    
+    result=$(adb devices | grep "$ip:5555")
+    
+    if [ "$result" != "" ]; then
+        break
+    fi
+    
+    sleep 1
+done
